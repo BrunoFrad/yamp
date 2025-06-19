@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function Navbar() {
 
@@ -15,8 +16,8 @@ export default function Navbar() {
                 <img src={"vercel.svg"} width={"30vw"} className="ml-16" />
                 <ul className="flex space-x-4 gap-2">
                     {pathname == "/" ? 
-                        <li><a href="#" className="text-md text-neutral-100 font-medium hover:cursor-default">Player</a></li> :
-                        <li><a href="/" className="text-md text-neutral-500 hover:text-neutral-100">Player</a></li>
+                        <li><Link href="#" className="text-md text-neutral-100 font-medium hover:cursor-default">Player</Link></li> :
+                        <li><Link href="/" className="text-md text-neutral-500 hover:text-neutral-100">Player</Link></li>
                     }
                     <li><a href="https://github.com/BrunoFrad/yamp" target="_blank" className="text-md text-neutral-500 hover:text-neutral-100">Github</a></li>
                 </ul>
