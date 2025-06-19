@@ -8,8 +8,8 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 import Link from "next/link"
-import { FormEventHandler, ReactEventHandler, useState } from "react"
-import { Terminal } from "lucide-react"
+import { useState } from "react"
+import { AlertCircleIcon, Terminal } from "lucide-react"
 import axios from "axios";
 
 export function SignUpForm({
@@ -18,16 +18,20 @@ export function SignUpForm({
 }: React.ComponentProps<"div">) {
 
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    
-    const res = await axios.post('/api/auth/register');
 
-    if (res.status == 400)
-        console.log(res.data);
+    const res = await axios.post('/api/auth/register', {
+      email : email,
+      password : password
+    });
+
+    if (res.data.error !== undefined && res.data.error.includes("email"))
+      setEmailError(true);
 
   }
 
@@ -53,6 +57,15 @@ export function SignUpForm({
                   required
                 />
               </div>
+              {emailError && 
+                <Alert variant="destructive">
+                  <AlertCircleIcon />
+                  <AlertTitle>Unable to create your account.</AlertTitle>
+                  <AlertDescription>
+                    <p>Your email is already in use.</p>
+                  </AlertDescription>
+                </Alert>
+              }
               <div className="grid gap-3">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
@@ -63,10 +76,10 @@ export function SignUpForm({
                 <div className="flex items-center">
                   <Label htmlFor="password">Confirm your password</Label>
                 </div>
-                <Input id="password" type="password" onChange={(e) => setConfirmPassword(e.target.value)} required />
+                <Input id="confirm-password" type="password" onChange={(e) => setConfirmPassword(e.target.value)} required />
               </div>
               {
-                (password != confirmPassword && confirmPassword.length > 0) ? 
+                (password !== confirmPassword && confirmPassword.length > 0) ? 
                 <>
                     <Alert variant={"default"}>
                       <Terminal />
@@ -80,7 +93,7 @@ export function SignUpForm({
                     </Button> 
                 </>
                 : 
-                (email.length == 0 || password.length == 0 || confirmPassword.length == 0) ?
+                (email.length === 0 || password.length === 0 || confirmPassword.length === 0) ?
                     <Button variant={"secondary"} disabled className="w-full">
                       Sign Up
                     </Button> 
