@@ -17,7 +17,7 @@ export default function Navbar() {
                 </ul>
             </section>
             <section className="flex gap-4">
-                <Button variant="default">Login</Button>
+                <Button variant="default" onClick={() => router.push("/login")}>Login</Button>
                 <Button variant="outline" className="mr-16" onClick={() => router.push("/signup")} >Sign Up</Button>
             </section>
         </nav>
