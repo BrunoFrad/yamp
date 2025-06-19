@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 import Link from "next/link"
+import Image from "next/image";
 import { useState } from "react"
 import { AlertCircleIcon, Terminal } from "lucide-react"
 import axios from "axios";
@@ -44,7 +45,7 @@ export function SignUpForm({
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Nice to meet you!</h1>
                 <p className="text-muted-foreground text-balance">
-                  Let's create your account.
+                  Let&apos;s create your account.
                 </p>
               </div>
               <div className="grid gap-3">
@@ -111,10 +112,11 @@ export function SignUpForm({
             </div>
           </form>
           <div className="bg-muted relative hidden md:block">
-            <img
+            <Image
               src="/travis-yewell-F-B7kWlkxDQ-unsplash.jpg"
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.5]"
+              fill
             />
           </div>
         </CardContent>

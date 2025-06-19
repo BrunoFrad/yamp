@@ -1,19 +1,44 @@
+'use client';
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import Image from "next/image"
+import { useState } from "react"
+import axios from "axios";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { AlertCircleIcon } from "lucide-react";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [password, setPassword] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+      e.preventDefault();
+
+      const res = await axios.post('/api/auth/login', {
+        email: email,
+        password: password
+      });
+
+      if (res.status === 201 && res.data.error !== undefined)
+        setEmailError(true);
+
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -27,18 +52,35 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="jhon@example.com"
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
+              {emailError && 
+                <Alert variant="destructive">
+                  <AlertCircleIcon />
+                  <AlertTitle>Unable to enter in your account.</AlertTitle>
+                  <AlertDescription>
+                    <p>Your email not exists in our system.</p>
+                  </AlertDescription>
+                </Alert>
+              }
               <div className="grid gap-3">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" onChange={(e) => setPassword(e.target.value)} required />
               </div>
-              <Button type="submit" className="w-full">
-                Login
-              </Button>
+              {
+              (email.length === 0 || password.length === 0) ?
+                <Button disabled variant={"secondary"} className="w-full">
+                  Login
+                </Button> :
+                  <Button type="submit" className="w-full">
+                    Login
+                  </Button>
+              }
+
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
                 <Link href="/signup" className="underline underline-offset-4">
@@ -48,10 +90,11 @@ export function LoginForm({
             </div>
           </form>
           <div className="bg-muted relative hidden md:block">
-            <img
+            <Image
               src="/travis-yewell-F-B7kWlkxDQ-unsplash.jpg"
               alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.5]"
+              className="absolute inset-0 h-full object-cover dark:brightness-[0.5]"
+              fill
             />
           </div>
         </CardContent>

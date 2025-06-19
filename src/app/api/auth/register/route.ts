@@ -10,9 +10,9 @@ export async function POST (request: NextRequest) {
     const name: string = email.split('@')[0];
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword: string = await bcrypt.hash(password, 10);
 
-        const user = await prisma.user.create({
+        const user: any = await prisma.user.create({
             data: {
                 name,
                 email,
@@ -22,8 +22,6 @@ export async function POST (request: NextRequest) {
 
         return NextResponse.json({ status: 201 });
     } catch (error: any) {
-        console.log(error.message);
- 
         return NextResponse.json(
             {error : error.message},
             {status: 200}

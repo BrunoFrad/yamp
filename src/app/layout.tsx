@@ -5,7 +5,6 @@ import { ThemeProviderClient as ThemeProvider } from "./components/theme-provide
 import Navbar from "./components/navbar";
 
 import { Inter } from "next/font/google";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
