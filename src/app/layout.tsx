@@ -25,7 +25,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Navbar />
-          <main>{children}</main>
+          <main className="h-[calc(100vh-80px)]">{children}</main>
         </ThemeProvider>
       </body>
     </html>

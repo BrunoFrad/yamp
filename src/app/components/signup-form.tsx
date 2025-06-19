@@ -1,19 +1,41 @@
+"use client";
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+
 import Link from "next/link"
+import { FormEventHandler, ReactEventHandler, useState } from "react"
+import { Terminal } from "lucide-react"
+import axios from "axios";
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    
+    const res = await axios.post('/api/auth/register');
+
+    if (res.status == 400)
+        console.log(res.data);
+
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Nice to meet you!</h1>
@@ -27,6 +49,7 @@ export function SignUpForm({
                   id="email"
                   type="email"
                   placeholder="jhon@example.com"
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -34,17 +57,38 @@ export function SignUpForm({
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" onChange={(e) => setPassword(e.target.value)}  required />
               </div>
               <div className="grid gap-3">
                 <div className="flex items-center">
                   <Label htmlFor="password">Confirm your password</Label>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" onChange={(e) => setConfirmPassword(e.target.value)} required />
               </div>
-              <Button type="submit" className="w-full">
-                Sign Up
-              </Button>
+              {
+                (password != confirmPassword && confirmPassword.length > 0) ? 
+                <>
+                    <Alert variant={"default"}>
+                      <Terminal />
+                      <AlertTitle>Error</AlertTitle>
+                      <AlertDescription>
+                        The passwords must be the same.
+                      </AlertDescription>
+                    </Alert>
+                    <Button variant={"secondary"} disabled className="w-full">
+                      Sign Up
+                    </Button> 
+                </>
+                : 
+                (email.length == 0 || password.length == 0 || confirmPassword.length == 0) ?
+                    <Button variant={"secondary"} disabled className="w-full">
+                      Sign Up
+                    </Button> 
+                :
+                    <Button type="submit" className="w-full">
+                      Sign Up
+                    </Button> 
+              }
               <div className="text-center text-sm">
                 Already have an account?{" "}
                 <Link href="/login" className="underline underline-offset-4">
