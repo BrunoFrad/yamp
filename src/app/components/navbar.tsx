@@ -24,7 +24,7 @@ export default function Navbar() {
     }, [pathname]);
 
     return(
-        <nav className="flex h-20 items-center justify-between border-b-2">
+        <nav className="flex h-[10vh] items-center justify-between border-b-2">
             <section className="flex gap-10">
                 <img src={"vercel.svg"} width={"30vw"} className="ml-16" />
                 <ul className="flex space-x-4 gap-2">
