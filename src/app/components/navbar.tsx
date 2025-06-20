@@ -1,14 +1,30 @@
 'use client';
 
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { NavUser } from "./navbar-user";
+import { get } from "http";
 
 export default function Navbar() {
 
-    const router = useRouter();
     const pathname = usePathname();
+
+    const [cookies, setCookies] = useState();
+
+    async function getCookies() {
+        try {
+            const res = await axios.get("/api/cookies");
+            setCookies(res.data.cookies);
+        } catch (error) {
+            console.log("Error fetching cookies:", error);
+        }
+    }
+
+    useEffect(() => {
+        getCookies();
+    }, [pathname]);
 
     return(
         <nav className="flex h-20 items-center justify-between border-b-2">
@@ -22,10 +38,9 @@ export default function Navbar() {
                     <li><a href="https://github.com/BrunoFrad/yamp" target="_blank" className="text-md text-neutral-500 hover:text-neutral-100">Github</a></li>
                 </ul>
             </section>
-            <section className="flex gap-4">
-                <Button variant="default" onClick={() => router.push("/login")}>Login</Button>
-                <Button variant="outline" className="mr-16" onClick={() => router.push("/signup")} >Sign Up</Button>
-            </section>
+            {
+                cookies && <NavUser user={cookies} />
+            }
         </nav>
     );
 }

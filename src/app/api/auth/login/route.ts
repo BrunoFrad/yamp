@@ -31,6 +31,7 @@ export async function POST (request: NextRequest) {
     const session = await getIronSession<UserSession>(request, response, sessionOptions);
     session.id = user.id;
     session.email = user.email;
+    session.name = user.name;
     await session.save();
 
     return response;

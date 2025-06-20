@@ -3,6 +3,8 @@ import { SessionOptions } from "iron-session";
 export type UserSession = {
     id: number,
     email: string
+    name: string,
+    avatar: string
 };
 
 export const sessionOptions: SessionOptions = {
