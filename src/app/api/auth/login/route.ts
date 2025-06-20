@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@/generated/prisma";
 import bcrypt from "bcryptjs";
 
+import { getIronSession } from "iron-session";
+import { sessionOptions, UserSession } from "@/lib/sessionOptions";
+
 const prisma = new PrismaClient();
 
 export async function POST (request: NextRequest) {
@@ -23,9 +26,12 @@ export async function POST (request: NextRequest) {
             {error: "Password is not valid"},
             {status: 201}
         );
+    
+    const response = NextResponse.json({status: 200});
+    const session = await getIronSession<UserSession>(request, response, sessionOptions);
+    session.id = user.id;
+    session.email = user.email;
+    await session.save();
 
-    return NextResponse.json(
-        {status: 201}
-    );
-
+    return response;
 }

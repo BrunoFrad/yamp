@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useState } from "react"
 import { AlertCircleIcon, Terminal } from "lucide-react"
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export function SignUpForm({
   className,
@@ -22,6 +23,7 @@ export function SignUpForm({
   const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -34,6 +36,8 @@ export function SignUpForm({
     if (res.data.error !== undefined && res.data.error.includes("email"))
       setEmailError(true);
 
+    if (res.status === 200)
+      router.refresh();
   }
 
   return (

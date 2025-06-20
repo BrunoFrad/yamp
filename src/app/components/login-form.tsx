@@ -11,6 +11,7 @@ import { useState } from "react"
 import axios from "axios";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
@@ -20,6 +21,8 @@ export function LoginForm({
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
@@ -29,8 +32,17 @@ export function LoginForm({
         password: password
       });
 
-      if (res.status === 201 && res.data.error !== undefined)
+      if (res.status === 201 && res.data.error !== undefined && res.data.error.includes("User"))
         setEmailError(true);
+      else
+        setEmailError(false);
+      if (res.status === 201 && res.data.error !== undefined && res.data.error.includes("Password"))
+        setPasswordError(true);
+      else
+        setPasswordError(false);
+
+      if (res.status === 200)
+        router.refresh();
 
   }
 
@@ -52,11 +64,16 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="jhon@example.com"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                      setEmail(e.target.value);
+                      setEmailError(false);
+                    }
+                }
                   required
                 />
               </div>
-              {emailError && 
+              {
+              emailError && 
                 <Alert variant="destructive">
                   <AlertCircleIcon />
                   <AlertTitle>Unable to enter in your account.</AlertTitle>
@@ -69,8 +86,23 @@ export function LoginForm({
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <Input id="password" type="password" onChange={(e) => setPassword(e.target.value)} required />
+                <Input id="password" type="password" onChange={(e) => {
+                    setPassword(e.target.value);
+                    setPasswordError(false);
+                  }
+                } 
+                required />
               </div>
+              {
+                passwordError &&
+                <Alert variant="destructive">
+                  <AlertCircleIcon />
+                  <AlertTitle>Unable to enter in your account.</AlertTitle>
+                  <AlertDescription>
+                    <p>This password is incorrect.</p>
+                  </AlertDescription>
+                </Alert>
+              }
               {
               (email.length === 0 || password.length === 0) ?
                 <Button disabled variant={"secondary"} className="w-full">
@@ -80,7 +112,6 @@ export function LoginForm({
                     Login
                   </Button>
               }
-
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
                 <Link href="/signup" className="underline underline-offset-4">
