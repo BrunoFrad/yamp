@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export function NavUser({
   user,
@@ -30,6 +31,7 @@ export function NavUser({
   }
 }) {
 
+  const router = useRouter();
 
   async function handleLogout() {
     try {
@@ -43,9 +45,9 @@ export function NavUser({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex mr-12" >
-        <Avatar className="h-10 w-10 rounded-lg grayscale">
+        <Avatar className="h-12 w-12 rounded-3xl grayscale">
           <AvatarImage src={user.avatar} alt={user.name} />
-          <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+          <AvatarFallback className="rounded-3xl">{(user.name[0] + user.name[1]).toUpperCase()}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -55,9 +57,9 @@ export function NavUser({
       >
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm mr-10">
-            <Avatar className="h-8 w-8 rounded-lg">
+            <Avatar className="h-10 w-10 rounded-3xl">
               <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <AvatarFallback className="rounded-3xl">{(user.name[0] + user.name[1]).toUpperCase()}</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-medium">{user.name}</span>
@@ -69,9 +71,9 @@ export function NavUser({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push("/profile")}>
             <IconUserCircle />
-            Account
+            Get Account Code
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

@@ -3,9 +3,8 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { getCookies } from "@/lib/getCookies";
 import { NavUser } from "./navbar-user";
-import { get } from "http";
 
 export default function Navbar() {
 
@@ -13,17 +12,15 @@ export default function Navbar() {
 
     const [cookies, setCookies] = useState();
 
-    async function getCookies() {
-        try {
-            const res = await axios.get("/api/cookies");
-            setCookies(res.data.cookies);
-        } catch (error) {
-            console.log("Error fetching cookies:", error);
-        }
-    }
-
+    
     useEffect(() => {
-        getCookies();
+        getCookies().then((data) => {
+            try {
+                setCookies(data);
+            } catch (error) {
+                console.error("Error setting cookies:", error);
+            }
+        });
     }, [pathname]);
 
     return(
