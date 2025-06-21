@@ -7,37 +7,58 @@ import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
 
 export default function Playback() {
-
-    const [moment, setMoment] = useState(0);
+    const [seconds, setSeconds] = useState(0);
+    const [minutes, setMinutes] = useState(0);
     const [playing, setPlaying] = useState(false);
 
-    function formatMomentWithColon(num: number): string {
-        const str = num.toString().padStart(4, '0');
-        return str.slice(0, 2) + ':' + str.slice(2); 
+    function formatMomentWithColon(min: number, sec: number): string {
+        const minStr = min.toString().padStart(2, '0');
+        const secStr = sec.toString().padStart(2, '0');
+        return `${minStr}:${secStr}`;
     }
 
     useEffect(() => {
-        if (playing) {
-            const interval = setInterval(() => {
-                setMoment(prev => prev + 1);
-            }, 1000); // Increment moment every second
+        if (!playing) return;
+        const interval = setInterval(() => {
+            setSeconds(prev => {
+                if (prev + 1 >= 60) {
+                    setMinutes(m => m + 1);
+                    return 0;
+                }
+                return prev + 1;
+            });
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [playing]);
 
-            return () => clearInterval(interval);
-        }
-    }, [moment, playing])
+    const totalSeconds = minutes * 60 + seconds;
+    const maxSeconds = 360;
 
-    return(
+    return (
         <div className="flex flex-col h-[10vh] border-t-2 justify-center items-center gap-4">
             <div className="flex justify-center items-center gap-4">
                 <IoPlayBack className="text-2xl" />
-                <div className="w-[3vw] h-[2vw] bg-neutral-100 rounded-4xl flex justify-center items-center" onClick={() => setPlaying(!playing)}>
+                <div
+                    className="w-[3vw] h-[2vw] bg-neutral-100 rounded-4xl flex justify-center items-center cursor-pointer"
+                    onClick={() => setPlaying(!playing)}
+                >
                     {playing ? <FaPause className="text-neutral-900" /> : <FaPlay className="text-neutral-900" />}
                 </div>
                 <IoPlayBack className="rotate-180 text-2xl" />
             </div>
             <div className="flex gap-4">
-                <Label>{formatMomentWithColon(moment)}</Label>
-                <Slider className="w-[24vw]" step={1} value={[moment]} onValueChange={(e) => setMoment(e[0] ? e[0] : moment)} />
+                <Label>{formatMomentWithColon(minutes, seconds)}</Label>
+                <Slider
+                    className="w-[24vw]"
+                    step={1}
+                    max={maxSeconds}
+                    value={[totalSeconds]}
+                    onValueChange={([value]) => {
+                        const v = value ?? 0;
+                        setMinutes(Math.floor(v / 60));
+                        setSeconds(v % 60);
+                    }}
+                />
             </div>
         </div>
     );
