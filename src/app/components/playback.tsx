@@ -35,7 +35,7 @@ export default function Playback() {
     const maxSeconds = 360;
 
     return (
-        <div className="flex flex-col h-[10vh] border-t-2 justify-center items-center gap-4">
+        <div className="flex flex-col h-[10vh] border-t-2 justify-center items-center gap-2">
             <div className="flex justify-center items-center gap-4">
                 <IoPlayBack className="text-2xl" />
                 <div
@@ -44,7 +44,7 @@ export default function Playback() {
                 >
                     {playing ? <FaPause className="text-neutral-900" /> : <FaPlay className="text-neutral-900" />}
                 </div>
-                <IoPlayBack className="rotate-180 text-2xl mr-4" />
+                <IoPlayBack className="rotate-180 text-2xl" />
             </div>
             <div className="flex gap-4">
                 <Label>{formatMomentWithColon(minutes, seconds)}</Label>

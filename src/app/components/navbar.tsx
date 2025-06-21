@@ -39,14 +39,12 @@ export default function Navbar() {
             </section>
             {cookies &&
                 <>
-                    <div className="flex justify-center w-[80vw]">
-                        <Input
-                            className="w-[35vw] mr-[10vw] text-center rounded-3xl py-[2vh]"
-                            placeholder="Search your favorite music here"
-                            value={musicQuery}
-                            onChange={(e) => setMusicQuery(e.target.value)}
-                        />
-                    </div>
+                    <Input
+                        className="w-[35vw] mr-[10vw] text-center rounded-3xl py-[2vh]"
+                        placeholder="Search your favorite music here"
+                        value={musicQuery}
+                        onChange={(e) => setMusicQuery(e.target.value)}
+                    />
                     <NavUser user={cookies} />
                 </>
             }
