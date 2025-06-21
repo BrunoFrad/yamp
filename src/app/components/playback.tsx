@@ -44,7 +44,7 @@ export default function Playback() {
                 >
                     {playing ? <FaPause className="text-neutral-900" /> : <FaPlay className="text-neutral-900" />}
                 </div>
-                <IoPlayBack className="rotate-180 text-2xl" />
+                <IoPlayBack className="rotate-180 text-2xl mr-4" />
             </div>
             <div className="flex gap-4">
                 <Label>{formatMomentWithColon(minutes, seconds)}</Label>

@@ -5,6 +5,7 @@ import { ThemeProviderClient as ThemeProvider } from "./components/theme-provide
 import Navbar from "./components/navbar";
 
 import { Inter } from "next/font/google";
+import { MusicQueryProvider } from "./context/MusicQueryContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,8 +24,10 @@ export default function RootLayout({
         className={`${inter.className}`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <Navbar />
-          <main className="h-[90vh]">{children}</main>
+          <MusicQueryProvider>
+            <Navbar />
+            <main className="h-[92vh]">{children}</main>
+          </MusicQueryProvider>
         </ThemeProvider>
       </body>
     </html>

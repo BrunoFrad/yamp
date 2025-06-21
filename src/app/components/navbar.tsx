@@ -5,38 +5,50 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getCookies } from "@/lib/getCookies";
 import { NavUser } from "./navbar-user";
+import { Input } from "@/components/ui/input";
+import { useMusicQueryContext } from "../context/MusicQueryContext";
 
 export default function Navbar() {
-
+    const { musicQuery, setMusicQuery } = useMusicQueryContext();
     const pathname = usePathname();
-
     const [cookies, setCookies] = useState();
 
-    
     useEffect(() => {
         getCookies().then((data) => {
-            try {
-                setCookies(data);
-            } catch (error) {
-                console.error("Error setting cookies:", error);
-            }
+            setCookies(data);
+        }).catch((error) => {
+            console.error("Error setting cookies:", error);
         });
     }, [pathname]);
 
-    return(
-        <nav className="flex h-[10vh] items-center justify-between border-b-2">
+    return (
+        <nav className="flex h-[8vh] items-center justify-between border-b-2">
             <section className="flex gap-10">
-                <img src={"vercel.svg"} width={"30vw"} className="ml-16" />
+                <img src={"/vercel.svg"} width={30} className="ml-[5vw]" alt="Logo" />
                 <ul className="flex space-x-4 gap-2">
-                    {pathname == "/" ? 
-                        <li><Link href="#" className="text-md text-neutral-100 font-medium hover:cursor-default">Player</Link></li> :
+                    {pathname === "/" ?
+                        <li><span className="text-md text-neutral-100 font-medium cursor-default">Player</span></li> :
                         <li><Link href="/" className="text-md text-neutral-500 hover:text-neutral-100">Player</Link></li>
                     }
-                    <li><a href="https://github.com/BrunoFrad/yamp" target="_blank" className="text-md text-neutral-500 hover:text-neutral-100">Github</a></li>
+                    <li>
+                        <a href="https://github.com/BrunoFrad/yamp" target="_blank" rel="noopener noreferrer" className="text-md text-neutral-500 hover:text-neutral-100">
+                            Github
+                        </a>
+                    </li>
                 </ul>
             </section>
-            {
-                cookies && <NavUser user={cookies} />
+            {cookies &&
+                <>
+                    <div className="flex justify-center w-[80vw]">
+                        <Input
+                            className="w-[35vw] mr-[10vw] text-center rounded-3xl py-[2vh]"
+                            placeholder="Search your favorite music here"
+                            value={musicQuery}
+                            onChange={(e) => setMusicQuery(e.target.value)}
+                        />
+                    </div>
+                    <NavUser user={cookies} />
+                </>
             }
         </nav>
     );
