@@ -30,6 +30,11 @@ export default function Navbar() {
                         <li><span className="text-md text-neutral-100 font-medium cursor-default">Player</span></li> :
                         <li><Link href="/" className="text-md text-neutral-500 hover:text-neutral-100">Player</Link></li>
                     }
+                    {
+                        pathname === "/contribute" ?
+                        <li><span className="text-md text-neutral-100 font-medium cursor-default">Contribute</span></li> :
+                        <li><Link href="/contribute" className="text-md text-neutral-500 hover:text-neutral-100">Contribute</Link></li>
+                    }
                     <li>
                         <a href="https://github.com/BrunoFrad/yamp" target="_blank" rel="noopener noreferrer" className="text-md text-neutral-500 hover:text-neutral-100">
                             Github
@@ -40,7 +45,7 @@ export default function Navbar() {
             {cookies &&
                 <>
                     <Input
-                        className="w-[35vw] mr-[10vw] text-center rounded-3xl py-[2vh]"
+                        className="w-[35vw] mr-[16vw] text-center rounded-3xl py-[2vh]"
                         placeholder="Search your favorite music here"
                         value={musicQuery}
                         onChange={(e) => setMusicQuery(e.target.value)}

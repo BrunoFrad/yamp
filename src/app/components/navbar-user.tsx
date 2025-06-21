@@ -73,7 +73,7 @@ export function NavUser({
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => router.push("/profile")}>
             <IconUserCircle />
-            Get Account Code
+            Get Your Account ID
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
