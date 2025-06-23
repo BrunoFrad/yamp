@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useRef, useState } from "react";
+import { useUploadedMusicThumbnailContext } from "../context/UploadedMusicThumbnailContext";
 
 export default function MusicUploader() {
 
-    const [thumb, setThumb] = useState<File | undefined>();
+    const { setUploadedMusicThumbnail } = useUploadedMusicThumbnailContext();
     const [preview, setPreview] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -14,7 +15,7 @@ export default function MusicUploader() {
     function handleFileChange() {
         const selectedFile = fileInputRef.current?.files?.[0];
         if (selectedFile) {
-            setThumb(selectedFile);
+            setUploadedMusicThumbnail(selectedFile);
             const reader = new FileReader();
 
             reader.onloadend = () => {

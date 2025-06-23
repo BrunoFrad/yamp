@@ -2,12 +2,12 @@
 
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-type MusicQueryContext = {
+type MusicQueryType = {
   musicQuery: string;
   setMusicQuery: (music: string) => void;
 };
 
-const MusicQueryContext = createContext<MusicQueryContext | undefined>(undefined);
+const MusicQueryContext = createContext<MusicQueryType | undefined>(undefined);
 
 export function MusicQueryProvider({ children }: { children: ReactNode }) {
   const [musicQuery, setMusicQuery] = useState("");

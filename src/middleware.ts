@@ -10,7 +10,7 @@ export default async function middleware(request: NextRequest) {
     
     if (session?.id && (pathname.pathname === "/login" || pathname.pathname === "/signup"))
         return NextResponse.redirect(new URL('/', request.url));
-    else if (!session.id && pathname.pathname === "/")
+    else if (!session.id && (pathname.pathname === "/" || pathname.pathname === "/contribute"))
         return NextResponse.redirect(new URL('/login', request.url));
         
 }

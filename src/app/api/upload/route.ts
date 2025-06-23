@@ -1,25 +1,40 @@
-import { writeFile, mkdir } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
-import path from "path";
+import { uploadFile } from './upload-file';
+import { PrismaClient } from "@/generated/prisma";
 
-export async function POST(request: NextRequest) {
-    const requestIncoming = await request.formData();
-    const file: File | null = requestIncoming.get('file') as unknown as File;
+const prisma = new PrismaClient();
 
-    if (!file) {
-        return new NextResponse("No file uploaded", { status: 400 });
+export default async function POST(request: NextRequest) {
+    const data = await request.formData();
+
+    if (!data) return NextResponse.json({error: "No file was received"},{status: 500});
+
+    const file = data.get('file');
+    if (!file || !(file instanceof File)) {
+        return NextResponse.json({ error: "No file was received or file is invalid" }, { status: 400 });
     }
 
-    console.log("File received:", file.name);
+    const thumbnail = data.get('thumbnail');
+    if (!thumbnail || !(thumbnail instanceof File)) {
+        return NextResponse.json({ error: "No file was received or file is invalid" }, { status: 400 });
+    }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    const filePath = await uploadFile(file);
+    const thumbnailPath = await uploadFile(thumbnail);
+    const title = data.get('title');
+    const playlist = data.get('playlist');
+    if (typeof title !== 'string' || typeof filePath !== 'string' || typeof thumbnailPath !== 'string' || typeof playlist !== 'string') {
+        return NextResponse.json({ error: "All args must be of the type string" }, { status: 400 });
+    }
 
-    const uploadDir = path.join(process.cwd(), 'public/uploads');
-    await mkdir(uploadDir, { recursive: true });
+    await prisma.music.create({
+        data: {
+            title: title,
+            url: filePath,
+            thumbnail: thumbnailPath,
+            playlistId: playlist === "public" ? 0 : 1, // "0" and "1" are just placeholders. CHANGE IT after implements the playlist system.
+        },
+    });
 
-    const filePath = path.join(uploadDir, file.name);
-    await writeFile(filePath, buffer);
-
-    return NextResponse.json({message: "File uploaded successfully"});
+    return NextResponse.json({ success: true });
 }
