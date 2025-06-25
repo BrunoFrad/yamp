@@ -4,10 +4,12 @@ import { PrismaClient } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 
-export default async function POST(request: NextRequest) {
+export async function POST(request: NextRequest) {
     const data = await request.formData();
 
-    if (!data) return NextResponse.json({error: "No file was received"},{status: 500});
+    if (!data) {
+        return NextResponse.json({ error: "No file was received" }, { status: 500 });
+    }
 
     const file = data.get('file');
     if (!file || !(file instanceof File)) {
@@ -22,8 +24,13 @@ export default async function POST(request: NextRequest) {
     const filePath = await uploadFile(file);
     const thumbnailPath = await uploadFile(thumbnail);
     const title = data.get('title');
-    const playlist = data.get('playlist');
-    if (typeof title !== 'string' || typeof filePath !== 'string' || typeof thumbnailPath !== 'string' || typeof playlist !== 'string') {
+
+    if (
+        typeof title !== 'string' ||
+        typeof filePath !== 'string' ||
+        typeof thumbnailPath !== 'string'
+        // || typeof playlist !== 'string' // Uncomment after implementing playlist system
+    ) {
         return NextResponse.json({ error: "All args must be of the type string" }, { status: 400 });
     }
 
@@ -31,10 +38,9 @@ export default async function POST(request: NextRequest) {
         data: {
             title: title,
             url: filePath,
-            thumbnail: thumbnailPath,
-            playlistId: playlist === "public" ? 0 : 1, // "0" and "1" are just placeholders. CHANGE IT after implements the playlist system.
+            thumbnail: thumbnailPath
         },
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true});
 }

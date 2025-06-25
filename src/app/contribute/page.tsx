@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { UploadedMusicThumbnailProvider, useUploadedMusicThumbnailContext } from "../context/UploadedMusicThumbnailContext";
 import axios from "axios";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useRouter } from "next/navigation";
 
 export default function Contribute () {
     return(
@@ -25,7 +26,8 @@ function ContributeContent() {
     const [musicTitle, setMusicTitle] = useState<string | undefined>();
     const [addToPlaylist, setAddToPlaylist] = useState(false);
     const [file, setFile] = useState<File | undefined>();
-    
+    const router = useRouter();
+
     function handleAddMusicClick () {
         fileInputRef.current?.click();
     };
@@ -48,7 +50,7 @@ function ContributeContent() {
         formData.append('file', file as Blob);
         if (addToPlaylist) formData.append('playlist', "public");
 
-        await axios.post('/api/upload', formData).catch((error) => console.log(error));
+        await axios.post('/api/upload', formData).catch((error) => console.log(error)).finally(() => router.push('/'));
     }
 
     return(
