@@ -31,6 +31,7 @@ model Music {
   title String
   url String
   thumbnail String
+  duration Int
 
   playlistId Int?
   playlist Playlist? @relation(fields: [playlistId], references: [id])

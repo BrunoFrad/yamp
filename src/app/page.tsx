@@ -7,6 +7,7 @@ import PlayerContainer from "./components/player-container";
 import { useMusicQueryContext } from "@/app/context/MusicQueryContext";
 import type { Music } from "@/app/api/music/route";
 import { useEffect, useState } from "react";
+import { MusicPlaybackProvider } from "./context/MusicPlaybackContext";
 
 export default function Home() {
   const { musicQuery } = useMusicQueryContext();
@@ -28,30 +29,32 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-full justify-end">
-      <div className="flex justify-center items-center h-full w-full">
-        <PlayerContainer>
-          {musicQuery.length === 0 ? (
-            <>
-              <h1 className="scroll-m-20 text-center text-5xl font-extrabold tracking-tight text-balance">You might search for some music now</h1>
-              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-neutral-300">Your search results will appear in this box</h4>
-            </>
-          ) : loading ? (
-            <h1 className="text-center scroll-m-20 text-5xl font-extrabold tracking-tight text-balance">Loading...</h1>
-          ) : musics && musics.length === 0 ? (
-            <>
-              <h1 className="scroll-m-20 text-center text-5xl font-extrabold tracking-tight text-balance">Not founded any music</h1>
-              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-neutral-300">We are sorry! Try to search for another one.</h4>
-            </>
-          ) : (
-            <div className="w-full h-full">
-              {musics?.map((music) => (
-                  <MusicCard key={music.id} title={music.title} file={music.url} thumbnail={music.thumbnail} />
-              ))}
-            </div>
-          )}
-        </PlayerContainer>
-      </div>
-      <Playback />
+      <MusicPlaybackProvider>
+        <div className="flex justify-center items-center h-full w-full">
+          <PlayerContainer>
+            {musicQuery.length === 0 ? (
+              <>
+                <h1 className="scroll-m-20 text-center text-5xl font-extrabold tracking-tight text-balance">You might search for some music now</h1>
+                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-neutral-300">Your search results will appear in this box</h4>
+              </>
+            ) : loading ? (
+              <h1 className="text-center scroll-m-20 text-5xl font-extrabold tracking-tight text-balance">Loading...</h1>
+            ) : musics && musics.length === 0 ? (
+              <>
+                <h1 className="scroll-m-20 text-center text-5xl font-extrabold tracking-tight text-balance">Not founded any music</h1>
+                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-neutral-300">We are sorry! Try to search for another one.</h4>
+              </>
+            ) : (
+              <div className="w-full h-full">
+                {musics?.map((music) => (
+                  <MusicCard key={music.id} title={music.title} file={music.url} thumbnail={music.thumbnail} duration={music.duration ?? 0} />
+                ))}
+              </div>
+            )}
+          </PlayerContainer>
+        </div>
+        <Playback />
+      </MusicPlaybackProvider>
     </div>
   );
 }

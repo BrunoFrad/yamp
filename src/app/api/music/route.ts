@@ -8,7 +8,8 @@ export type Music = {
     title: string,
     url: string,
     thumbnail: string,
-    playlistId?: number | null
+    playlistId?: number | null,
+    duration: number
 };
 
 export async function POST(request: NextRequest) {
