@@ -6,11 +6,20 @@ import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { useMusicPlaybackContext } from '../context/MusicPlaybackContext';
 import { buildFormattedTimer } from '@/lib/buildFormatedTimer';
+import { useEffect } from 'react';
 
 export default function Playback() {
     
     const { play, pause, isPlaying, currentTime, setTimer, currentSrc, setVolume, duration } = useMusicPlaybackContext();
     
+    useEffect(() => {
+
+        const stored = window.localStorage.getItem("default-volume");
+        const parsed = stored !== null ? parseFloat(stored) : 1;
+
+        setVolume(parsed);
+    }, [setVolume]);
+
     return (
         <>
             <div className="flex flex-col h-[10vh] border-t-2 justify-center items-center gap-2 w-full">
@@ -46,8 +55,17 @@ export default function Playback() {
                     className="w-[10vw]"
                     step={0.01}
                     max={1}
-                    defaultValue={[1]}
-                    onValueChange={([value]) => setVolume(value)}
+                    defaultValue={[
+                        (() => {
+                            const stored = window.localStorage.getItem("default-volume");
+                            const parsed = stored !== null ? parseFloat(stored) : 1;
+                            return isNaN(parsed) ? 1 : parsed;
+                        })()
+                    ]}
+                    onValueChange={([value]) => {
+                        setVolume(value);
+                        window.localStorage.setItem("default-volume", value.toString());
+                    }}
                 />
             </div>
         </>

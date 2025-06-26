@@ -2,6 +2,7 @@ import { buildFormattedTimer } from "@/lib/buildFormatedTimer";
 import { Button } from "@/components/ui/button";
 import { FaPause, FaPlay } from "react-icons/fa";
 import { useMusicPlaybackContext } from "../context/MusicPlaybackContext";
+import { useEffect, useState } from "react";
 
 type Music = {
     title: string,
@@ -12,13 +13,22 @@ type Music = {
 
 export default function MusicCard(props: Music) {
 
-    const { isPlaying, play, pause } = useMusicPlaybackContext();
+    const { currentSrc, play, pause, isPlaying } = useMusicPlaybackContext();
+
+    const [isThisPlaying, setIsThisPlaying] = useState<boolean>(false);
 
     function handlePlay() {
-        if (isPlaying)
+        if (isThisPlaying)
             pause();
         else play(props.file);
     }
+
+    useEffect(() => {
+        if (currentSrc === props.file)
+            setIsThisPlaying(isPlaying);
+        else
+            setIsThisPlaying(false);
+    }, [currentSrc, isPlaying, props.file]);
 
     return(
         <>
@@ -34,7 +44,7 @@ export default function MusicCard(props: Music) {
                         </div>
                     </div>
                 </div>
-                {!isPlaying ?
+                {!isThisPlaying ?
                     <Button className="mr-[3vw] w-[6vw]" onClick={handlePlay}><FaPlay/> Play</Button> :
                     <Button className="mr-[3vw] w-[6vw]" onClick={handlePlay}><FaPause/> Play</Button>
                 }

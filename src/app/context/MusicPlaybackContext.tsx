@@ -26,8 +26,8 @@ export const MusicPlaybackProvider: React.FC<{ children: React.ReactNode }> = ({
     let interval: NodeJS.Timeout | undefined;
 
     if (isPlaying) {
-      if (duration <= currentTime)
-      setCurrentTime(0);
+      if (duration <= currentTime) setCurrentTime(0);
+      
       interval = setInterval(() => {
         setCurrentTime(prev => prev + 1);
       }, 1000);
@@ -47,6 +47,7 @@ export const MusicPlaybackProvider: React.FC<{ children: React.ReactNode }> = ({
     if (src && src !== currentSrc && audioRef.current !== null) {
       audioRef.current.src = src;
       setCurrentSrc(src);
+      setCurrentTime(0);
       audioRef.current.onloadedmetadata = () => {
         if (audioRef.current) {
           setDuration(audioRef.current.duration);

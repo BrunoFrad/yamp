@@ -14,6 +14,7 @@ export default function Navbar() {
     const [cookies, setCookies] = useState();
 
     useEffect(() => {
+        setMusicQuery("");
         getCookies().then((data) => {
             setCookies(data);
         }).catch((error) => {
