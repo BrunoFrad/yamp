@@ -9,18 +9,22 @@ type Music = {
     thumbnail: string,
     file: string,
     duration: number,
+    index: number
 }
 
 export default function MusicCard(props: Music) {
 
-    const { currentSrc, play, pause, isPlaying } = useMusicPlaybackContext();
+    const { currentSrc, play, pause, isPlaying, setCurrentIndex } = useMusicPlaybackContext();
 
     const [isThisPlaying, setIsThisPlaying] = useState<boolean>(false);
 
     function handlePlay() {
         if (isThisPlaying)
             pause();
-        else play(props.file);
+        else {
+            setCurrentIndex(props.index);
+            play(props.file);
+        }
     }
 
     useEffect(() => {

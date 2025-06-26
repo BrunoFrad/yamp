@@ -7,10 +7,12 @@ interface MusicPlaybackContextType {
   pause: () => void;
   setTimer: (seconds: number) => void;
   setVolume: (value: number) => void;
+  setCurrentIndex: (value: number) => void;
   duration: number;
   isPlaying: boolean;
   currentSrc: string | null;
   currentTime: number;
+  currentIndex: number;
 }
 
 const MusicPlaybackContext = createContext<MusicPlaybackContextType | undefined>(undefined);
@@ -21,6 +23,7 @@ export const MusicPlaybackProvider: React.FC<{ children: React.ReactNode }> = ({
   const [currentSrc, setCurrentSrc] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0)
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined;
@@ -36,7 +39,7 @@ export const MusicPlaybackProvider: React.FC<{ children: React.ReactNode }> = ({
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isPlaying]);
+  }, [currentTime, duration, isPlaying]);
 
   const play = (src?: string) => {
     if (!audioRef.current) {
@@ -79,7 +82,7 @@ export const MusicPlaybackProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   return (
-    <MusicPlaybackContext.Provider value={{ play, pause, isPlaying, setTimer, setVolume, duration, currentSrc, currentTime }}>
+    <MusicPlaybackContext.Provider value={{ play, pause, isPlaying, setTimer, setVolume, duration, currentSrc, currentTime, setCurrentIndex, currentIndex }}>
       {children}
     </MusicPlaybackContext.Provider>
   );

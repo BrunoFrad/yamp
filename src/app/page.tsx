@@ -46,14 +46,14 @@ export default function Home() {
               </>
             ) : (
               <div className="w-full h-full">
-                {musics?.map((music) => (
-                  <MusicCard key={music.id} title={music.title} file={music.url} thumbnail={music.thumbnail} duration={music.duration ?? 0} />
+                {musics?.map((music, index) => (
+                  <MusicCard key={music.id} title={music.title} file={music.url} thumbnail={music.thumbnail} duration={music.duration ?? 0} index={index} />
                 ))}
               </div>
             )}
           </PlayerContainer>
         </div>
-        <Playback />
+        <Playback array={musics} />
       </MusicPlaybackProvider>
     </div>
   );
