@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import ContributeContainer from "../components/contribute-container";
+import DefaultContainer from "../components/default-container";
 import { useRef, useState } from "react";
 import MusicUploader from "../components/thumb-uploader";
 import { Input } from "@/components/ui/input";
@@ -65,12 +65,12 @@ function ContributeContent() {
             <div className="flex flex-col h-full justify-center items-center">
                 {
                     !file ?
-                        <ContributeContainer>
+                        <DefaultContainer>
                             <h1 className="scroll-m-20 text-center text-5xl font-extrabold tracking-tight text-balance">Thanks by helping our web app</h1>
                             <Button onClick={handleAddMusicClick}>Add a new music file</Button>
-                        </ContributeContainer>
+                        </DefaultContainer>
                         :
-                        <ContributeContainer >
+                        <DefaultContainer >
                             <div className="flex gap-10">
                                 <MusicUploader />
                                 <div className="flex flex-col h-full justify-center">
@@ -98,7 +98,7 @@ function ContributeContent() {
                                     </div>
                                 </div>
                             </div>
-                        </ContributeContainer>
+                        </DefaultContainer>
                 }
             </div>
         </>

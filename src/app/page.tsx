@@ -4,13 +4,13 @@ import axios from "axios";
 import MusicCard from "./components/music-card";
 import Playback from "./components/playback";
 import PlayerContainer from "./components/player-container";
-import { useMusicQueryContext } from "@/app/context/MusicQueryContext";
+import { useNavbarContext } from "@/app/context/NavbarContext";
 import type { Music } from "@/app/api/music/route";
 import { useEffect, useState } from "react";
 import { MusicPlaybackProvider } from "./context/MusicPlaybackContext";
 
 export default function Home() {
-  const { musicQuery } = useMusicQueryContext();
+  const { musicQuery } = useNavbarContext();
   const [musics, setMusics] = useState<Music[] | null>(null);
   const [loading, setLoading] = useState(false);
 

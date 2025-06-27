@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { getCookies } from "@/lib/getCookies";
 import { NavUser } from "./navbar-user";
 import { Input } from "@/components/ui/input";
-import { useMusicQueryContext } from "../context/MusicQueryContext";
+import { useNavbarContext } from "../context/NavbarContext";
 
 export default function Navbar() {
-    const { musicQuery, setMusicQuery } = useMusicQueryContext();
+    const { musicQuery, setMusicQuery, setUsername } = useNavbarContext();
     const pathname = usePathname();
     const [cookies, setCookies] = useState();
 
@@ -17,10 +17,13 @@ export default function Navbar() {
         setMusicQuery("");
         getCookies().then((data) => {
             setCookies(data);
+            if (data)
+                setUsername(data.name)
         }).catch((error) => {
             console.error("Error setting cookies:", error);
         });
-    }, [pathname]);
+
+    }, [pathname, setMusicQuery, setUsername, setCookies]);
 
     return (
         <nav className="flex h-[8vh] items-center justify-between border-b-2">
