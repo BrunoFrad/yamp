@@ -7,7 +7,6 @@ import PlayerContainer from "./components/player-container";
 import { useNavbarContext } from "@/app/context/NavbarContext";
 import type { Music } from "@/app/api/music/route";
 import { useEffect, useState } from "react";
-import { MusicPlaybackProvider } from "./context/MusicPlaybackContext";
 
 export default function Home() {
   const { musicQuery } = useNavbarContext();
@@ -29,7 +28,6 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-full justify-end">
-      <MusicPlaybackProvider>
         <div className="flex justify-center items-center h-full w-full">
           <PlayerContainer>
             {musicQuery.length === 0 ? (
@@ -54,7 +52,6 @@ export default function Home() {
           </PlayerContainer>
         </div>
         <Playback array={musics} />
-      </MusicPlaybackProvider>
     </div>
   );
 }

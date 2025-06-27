@@ -6,6 +6,7 @@ import Navbar from "./components/navbar";
 
 import { Inter } from "next/font/google";
 import { NavbarProvider } from "./context/NavbarContext";
+import { MusicPlaybackProvider } from "./context/MusicPlaybackContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -25,8 +26,10 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <NavbarProvider>
-            <Navbar />
-            <main className="h-[92vh]">{children}</main>
+            <MusicPlaybackProvider>
+              <Navbar />
+              <main className="h-[92vh]">{children}</main>
+            </MusicPlaybackProvider>
           </NavbarProvider>
         </ThemeProvider>
       </body>
