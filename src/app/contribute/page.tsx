@@ -78,20 +78,6 @@ function ContributeContent() {
                                         <Label className="font-medium">Music Title</Label>
                                         <Input value={musicTitle} onChange={(e) => setMusicTitle(e.currentTarget.value)} className="w-[30vw]" />
                                     </div>
-                                    <div className="flex flex-col gap-4">
-                                        <div className="flex gap-4 pt-8 items-center">
-                                            <Label className="font-medium">Add to a Playlist</Label>
-                                            <Switch checked={addToPlaylist} onCheckedChange={(e) => setAddToPlaylist(e)} />
-                                        </div>
-                                        {
-                                            !addToPlaylist &&
-                                            <Alert variant="default" className="w-[20vw]">
-                                                <AlertDescription className="text-neutral-200">
-                                                    Not checking this toogle makes your music public.
-                                                </AlertDescription>
-                                            </Alert>
-                                        }
-                                    </div>
                                     <div className="flex items-center h-[10vh] gap-4">
                                         <Button onClick={handleAddMusicClick}>Change File</Button>
                                         <Button onClick={handleUpload}>Finish</Button>

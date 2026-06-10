@@ -47,8 +47,8 @@ export const MusicPlaybackProvider: React.FC<{ children: React.ReactNode }> = ({
       audioRef.current.onended = () => setIsPlaying(false);
     }
 
-    if (src && src !== currentSrc && audioRef.current !== null) {
-      audioRef.current.src = src;
+    if (src && src !== currentSrc) {
+      audioRef.current.src = `/api/music?name=${src}&type=audio`;
       setCurrentSrc(src);
       setCurrentTime(0);
       audioRef.current.onloadedmetadata = () => {

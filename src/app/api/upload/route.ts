@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "All args must be of the type string" }, { status: 400 });
     }
 
-    const absoluteFilePath = path.join(process.cwd(), 'public', filePath.replace(/^\//, ''));
+    const absoluteFilePath = path.join('/', filePath.replace(/^\//, ''));
     const metadata = await parseFile(absoluteFilePath);
     if (typeof metadata.format.duration !== 'number') {
         return NextResponse.json({error: "Failed to get the music duration"}, {status: 500});

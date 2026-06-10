@@ -40,7 +40,7 @@ export default function MusicCard(props: Music) {
                 <div className="flex p-4">
                     <div className="flex items-center">
                         <div className="group flex justify-center items-center w-[10vh] h-[10vh] border-2 rounded-xl overflow-hidden relative">
-                            <img src={props.thumbnail} />
+                            <img src={`/api/music?name=${props.thumbnail}&type=thumbnail`} />
                         </div>
                         <div className="px-6">
                             <h2 className="scroll-m-20 text-2xl font-bold tracking-tight">{props.title}</h2>

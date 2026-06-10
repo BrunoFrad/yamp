@@ -111,10 +111,6 @@ export function NavUser({
                 Edit your profile
               </DropdownMenuItem>
             </DialogTrigger>
-            <DropdownMenuItem onClick={() => setCurrentDialog("playlist")}>
-              <MdLibraryMusic />
-              Manage your playlists
-            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
